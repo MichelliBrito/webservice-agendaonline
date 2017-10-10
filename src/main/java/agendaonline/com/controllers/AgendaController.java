@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,6 +53,14 @@ public class AgendaController {
 		return consulta;
 	}
 	
+	@ApiOperation(value = "Deleta consulta" )
+	@DeleteMapping(value="/{codigo}")
+	public Consulta deletaConsulta(@PathVariable("codigo") long codigo){
+		Consulta consulta = cr.findByCodigo(codigo);
+		cr.delete(consulta);
+		return consulta;
+	}
+	
 	@ApiOperation(value = "Salva prontuário" )
 	@PostMapping(value="/{codigo}")
 	public Prontuario formProntuarioPost(@PathVariable("codigo") long codigo,  @RequestBody Prontuario prontuario){
@@ -75,5 +84,4 @@ public class AgendaController {
 		
 		return prr.save(prontuario);
 	}
-	
 }

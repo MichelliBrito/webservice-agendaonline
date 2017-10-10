@@ -1,6 +1,7 @@
 package agendaonline.com.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,5 +36,12 @@ public class ProcedimentosController {
 	@PostMapping()
 	public Procedimento cadastroProcedimento(@RequestBody Procedimento procedimento){
 		return pr.save(procedimento);
+	}
+	
+	@ApiOperation(value = "Deleta procedimento" ) //Diz ao Swagger que essa operação REST deve ser documentado
+	@DeleteMapping()
+	public Procedimento deletaProcedimento(@RequestBody Procedimento procedimento){
+		pr.delete(procedimento);
+		return procedimento;
 	}
 }

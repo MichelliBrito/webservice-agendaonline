@@ -17,7 +17,7 @@ import static springfox.documentation.builders.PathSelectors.regex;
 public class SwaggerConfig {
 
 	 @Bean
-	    public Docket productApi() {
+	    public Docket productApi() { //configurando a documentação do web service
 	        return new Docket(DocumentationType.SWAGGER_2)
 	                .select()
 	                .apis(RequestHandlerSelectors.basePackage("agendaonline.com"))
@@ -29,8 +29,8 @@ public class SwaggerConfig {
 	    private ApiInfo metaInfo() {
 
 	        ApiInfo apiInfo = new ApiInfo(
-	                "Agenda Online",
-	                "Sistema web para cadastro de consultas, pacientes, prontuários, etc...",
+	                "Agenda Online API Rest",
+	                "Web service para cadastro de consultas, pacientes, prontuários, etc...",
 	                "1.0",
 	                "Terms of Service",
 	                new Contact("Michelli Brito", "https://www.youtube.com/channel/UC2WbG8UgpPaLcFSNJYwtPow?view_as=subscriber",
