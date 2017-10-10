@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,8 +18,12 @@ import agendaonline.com.models.Procedimento;
 import agendaonline.com.models.Prontuario;
 import agendaonline.com.repositories.ConsultaRepository;
 import agendaonline.com.repositories.ProntuariosRepository;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
+@Api(value = "Agenda Resource") 
 @RestController
+@RequestMapping("/agendaonline/consulta")
 public class AgendaController {
 	
 	@Autowired
@@ -27,26 +32,28 @@ public class AgendaController {
 	@Autowired
 	private ProntuariosRepository prr;
 	
-	
-	@GetMapping(value="/consulta", produces="application/json")
+	@ApiOperation(value = "Lista de consultas" )
+	@GetMapping(produces="application/json")
 	public @ResponseBody Iterable<Consulta> MontaAgenda() {
 		Iterable<Consulta> listaConsultas = cr.findAll();
 		return listaConsultas;
 	}
 	
-	@PostMapping("/consulta")
+	@ApiOperation(value = "Salva consulta" )
+	@PostMapping()
 	public Consulta MontaAgenda(@RequestBody Consulta consulta){
 		return cr.save(consulta);
 	}
 	
-	@GetMapping(value="/consulta/{codigo}", produces="application/json")
+	@ApiOperation(value = "Detalhes consulta" )
+	@GetMapping(value="/{codigo}", produces="application/json")
 	public @ResponseBody Consulta detalhesConsulta(@PathVariable("codigo") long codigo){
 		Consulta consulta = cr.findByCodigo(codigo);
 		return consulta;
 	}
 	
-	
-	@PostMapping(value="/consulta/{codigo}")
+	@ApiOperation(value = "Salva prontuário" )
+	@PostMapping(value="/{codigo}")
 	public Prontuario formProntuarioPost(@PathVariable("codigo") long codigo,  @RequestBody Prontuario prontuario){
 	
 		Consulta consulta = cr.findByCodigo(codigo);
