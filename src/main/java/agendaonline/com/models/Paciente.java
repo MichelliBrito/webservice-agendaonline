@@ -9,6 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -20,14 +25,19 @@ public class Paciente implements Serializable{
 	private long codigo;
 	
 	@Id//o id tera que ser a chave estrangeira da outra coluna, por isso é importante definir certo!
+	@NotBlank(message="Este campo não pode estar em branco.")
+	@NotNull(message="Este campo não pode ser nulo.")
 	private String nome;
 	
 	@OneToMany
 	private List<Consulta> consultas;
 	
+	@NotNull(message="Este campo não pode ser nulo.")
 	@DateTimeFormat(pattern="dd-mm-yyyy")
 	private String nascimento;
 	
+	@NotNull(message="Este campo não pode ser nulo.")
+	@Size(max=20, message="Este campo deve ter no máximo 20 caracteres.")
 	private String sexo;
 	
 	@ManyToOne //Muitos pacientes para um convenio, ou seja, Many=paciente to One=convenio.
@@ -36,14 +46,41 @@ public class Paciente implements Serializable{
 	@OneToMany
 	private List<Prontuario> prontuarios;
 	
+	@Size(max=30, message="Este campo deve ter no máximo 30 caracteres.")
+	@NotNull(message="Este campo não pode ser nulo.")
 	private String endereco;
+	
+	@Size(max=5, message="Este campo deve ter no máximo 5 caracteres.")
+	@NotNull(message="Este campo não pode ser nulo.")
 	private int numero;
+	
+	@Size(max=20, message="Este campo deve ter no máximo 20 caracteres.")
+	@NotNull(message="Este campo não pode ser nulo.")
 	private String bairro;
+	
+	@Size(max=20, message="Este campo deve ter no máximo 20 caracteres.")
+	@NotNull(message="Este campo não pode ser nulo.")
 	private String cidade;
+	
+	@Size(min=8, max=8, message="Este campo deve ter 8 caracteres.")
+	@NotNull(message="Este campo não pode ser nulo.")
 	private long cep;
+	
+	@Size(min=2, max=2, message="Este campo deve ter 2 caracteres.")
+	@NotNull(message="Este campo não pode ser nulo.")
 	private String estado;
+	
+	@Size(min=11, max=13, message="Este campo deve ter no máximo 13 caracteres.")
+	@NotNull(message="Este campo não pode ser nulo.")
 	private long telefone;
+	
+	@Size(max=20, message="Este campo deve ter no máximo 20 caracteres.")
+	@NotNull(message="Este campo não pode ser nulo.")
 	private String email;
+	
+	@Size(max=30, message="Este campo deve ter no máximo 30 caracteres.")
+	@NotNull(message="Este campo não pode ser nulo.")
+	@Email(message="O email deve ser um endereço válido.")
 	private String observacao;
 	
 	

@@ -3,6 +3,8 @@ package agendaonline.com.models;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -19,12 +21,32 @@ public class Prontuario {
 	@ManyToOne
 	private Procedimento procedimento;
 	
+	@Size(max=50, message="Este campo deve ter no máximo 50 caracteres")
+	@NotNull(message="Este campo não pode ser nulo")
 	private String anamnese;
+	
+	@Size(max=50, message="Este campo deve ter no máximo 50 caracteres")
+	@NotNull(message="Este campo não pode ser nulo")
 	private String diagnostico;
+	
+	@Size(max=50, message="Este campo deve ter no máximo 50 caracteres")
+	@NotNull(message="Este campo não pode ser nulo")
 	private String procedimentoRealizado;
+	
+	@Size(max=50, message="Este campo deve ter no máximo 50 caracteres")
+	@NotNull(message="Este campo não pode ser nulo")
 	private String prescricaoRemedios;
+	
+	@Size(max=50, message="Este campo deve ter no máximo 50 caracteres")
+	@NotNull(message="Este campo não pode ser nulo")
 	private String prescricaoExames;
+	
+	@Size(max=50, message="Este campo deve ter no máximo 50 caracteres")
+	@NotNull(message="Este campo não pode ser nulo")
 	private String resultados;
+	
+	@Size(max=50, message="Este campo deve ter no máximo 50 caracteres")
+	@NotNull(message="Este campo não pode ser nulo")
 	private String observacao;
 	
 	

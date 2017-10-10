@@ -1,9 +1,12 @@
 package agendaonline.com.controllers;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import agendaonline.com.models.Consulta;
 import agendaonline.com.models.Paciente;
-import agendaonline.com.models.Procedimento;
-import agendaonline.com.models.Prontuario;
 import agendaonline.com.repositories.ConsultaRepository;
-import agendaonline.com.repositories.ProntuariosRepository;
+import agendaonline.com.repositories.PacienteRepository;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -31,19 +33,25 @@ public class AgendaController {
 	private ConsultaRepository cr;
 	
 	@Autowired
-	private ProntuariosRepository prr;
+	private PacienteRepository pr;
 	
 	@ApiOperation(value = "Lista de consultas" )
 	@GetMapping(produces="application/json")
-	public @ResponseBody Iterable<Consulta> MontaAgenda() {
+	public @ResponseBody Iterable<Consulta> listaConsultas() {
 		Iterable<Consulta> listaConsultas = cr.findAll();
 		return listaConsultas;
 	}
 	
 	@ApiOperation(value = "Salva consulta" )
 	@PostMapping()
-	public Consulta MontaAgenda(@RequestBody Consulta consulta){
-		return cr.save(consulta);
+	public ResponseEntity<?> cadastraConsulta(@RequestBody @ Valid Consulta consulta, BindingResult result, String  pacienteNome){
+		if (result.hasErrors()) {
+			 return ResponseEntity.badRequest().body(result.getFieldError());
+		 }
+		Paciente paciente = pr.findByNome(pacienteNome);
+		consulta.setPaciente(paciente);
+		cr.save(consulta);
+		return ResponseEntity.ok(consulta);
 	}
 	
 	@ApiOperation(value = "Detalhes consulta" )
@@ -61,27 +69,4 @@ public class AgendaController {
 		return consulta;
 	}
 	
-	@ApiOperation(value = "Salva prontuário" )
-	@PostMapping(value="/{codigo}")
-	public Prontuario formProntuarioPost(@PathVariable("codigo") long codigo,  @RequestBody Prontuario prontuario){
-	
-		Consulta consulta = cr.findByCodigo(codigo);
-		
-		
-		Paciente paciente = consulta.getPaciente();
-		prontuario.setPaciente(paciente);
-		
-		Procedimento procedimento = consulta.getProcedimento();
-		prontuario.setProcedimento(procedimento);
-		
-		LocalDateTime now = LocalDateTime.now();
-		String data = now.toString();
-		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		String newData = formatter.format(now);
-		
-		prontuario.setData(newData);
-		
-		return prr.save(prontuario);
-	}
-}
+}	

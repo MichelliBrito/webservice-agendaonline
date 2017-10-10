@@ -6,8 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -25,17 +27,23 @@ public class Consulta implements Serializable {
 	@ManyToOne
 	private Procedimento procedimento;
 	
+	@NotNull(message="Este campo não pode ser nulo.")
 	private boolean status;
 	
+	@NotBlank(message="Este campo não pode estar em branco.")
 	@DateTimeFormat(pattern="dd-mm-yyyy")
 	private String data;
 	
+	@NotBlank(message="Este campo não pode estar em branco.")
 	@DateTimeFormat(pattern="00:00")
 	private String horarioInicio;
 	
+	@NotBlank(message="Este campo não pode estar em branco.")
 	@DateTimeFormat(pattern="00:00")
 	private String horarioTermino;
 	
+	@NotNull(message="Este campo não pode ser nulo.")
+	@Size(max=50, message="Este campo deve conter no máximo 50 caracteres")
 	private String observacao;
 	
 	

@@ -1,6 +1,10 @@
 package agendaonline.com.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,8 +35,12 @@ public class ConveniosController {
 	
 	@ApiOperation(value = "Salva convênio" )
 	@PostMapping()
-	public Convenio cadastroConvenio(@RequestBody Convenio convenio){
-		return cr.save(convenio);
+	public ResponseEntity<?> cadastroConvenio(@RequestBody @Valid Convenio convenio, BindingResult result){
+		if (result.hasErrors()) {
+			 return ResponseEntity.badRequest().body(result.getFieldError());
+		 }
+		cr.save(convenio);
+		return ResponseEntity.ok(convenio);
 	}
 	
 	@ApiOperation(value = "Deleta convênio" ) //Diz ao Swagger que essa operação REST deve ser documentado
