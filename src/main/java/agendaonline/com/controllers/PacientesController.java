@@ -1,6 +1,11 @@
 package agendaonline.com.controllers;
 
+
+import java.util.ArrayList;
+
 import javax.validation.Valid;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,11 +37,26 @@ public class PacientesController {//terminar, colocar remove e edite
 	
 	@ApiOperation(value = "Lista de pacientes" )
 	@GetMapping(produces="application/json")
-	public @ResponseBody Iterable<Paciente> listaPacientes(){
+	public @ResponseBody ArrayList<Paciente> listaPacientes(){
 		Iterable<Paciente> listaPacientes = pr.findAll();	
-		return listaPacientes;
+		ArrayList<Paciente> pacienteReturn = new ArrayList<Paciente>();
+		for(Paciente paciente : listaPacientes){
+			String nome = paciente.getNome();
+			paciente.add(linkTo(methodOn(PacientesController.class).especificaPaciente(nome)).withSelfRel()); // Adicione uma referencia ao método especificaPaciente do controller passando o ID como parâmetro
+            // isso é feito para todos os elementos da lista
+			pacienteReturn.add(paciente);
+		}
+		return pacienteReturn;
 	}
-	
+
+	@ApiOperation(value = "Mostra paciente específico" )
+	@GetMapping(value="/{nome}", produces="application/json")
+	public @ResponseBody Paciente especificaPaciente(@PathVariable(value = "nome") String nome) {
+		Paciente paciente = pr.findByNome(nome);
+		paciente.add(linkTo(methodOn(PacientesController.class).listaPacientes()).withRel("Lista de Pacientes")); //Adicione uma auto referencia ao método get do controller passando o ID como parâmetro
+		return paciente;
+	}
+
 	@ApiOperation(value = "Salva paciente" )
 	@PostMapping()
 	public ResponseEntity<?> listaPacientes(@RequestBody @Valid Paciente paciente, BindingResult result){
@@ -44,6 +64,9 @@ public class PacientesController {//terminar, colocar remove e edite
 			return ResponseEntity.badRequest().body(result.getFieldError());
 		}
 		pr.save(paciente);
+		String nome = paciente.getNome();
+		//adiciona uma referencia ao paciente que foi criado e salvo no banco de dados.
+		paciente.add(linkTo(methodOn(PacientesController.class).especificaPaciente(nome)).withSelfRel());
 		return ResponseEntity.ok(paciente);
 	}
 	

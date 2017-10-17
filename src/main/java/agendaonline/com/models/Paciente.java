@@ -15,9 +15,15 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.hateoas.ResourceSupport;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+//Adicione a anotação @JsonIgnoreProperties
+@JsonIgnoreProperties(ignoreUnknown = true)
 
 @Entity
-public class Paciente implements Serializable{
+public class Paciente extends ResourceSupport implements Serializable{//Extenda ResourceSupport
 
 	private static final long serialVersionUID = 1L;
 	
@@ -37,7 +43,7 @@ public class Paciente implements Serializable{
 	private String nascimento;
 	
 	@NotNull(message="Este campo não pode ser nulo.")
-	@Size(max=20, message="Este campo deve ter no máximo 20 caracteres.")
+	@Size(min=0, max=20, message="Este campo deve ter no máximo 20 caracteres.")
 	private String sexo;
 	
 	@ManyToOne //Muitos pacientes para um convenio, ou seja, Many=paciente to One=convenio.
@@ -46,23 +52,23 @@ public class Paciente implements Serializable{
 	@OneToMany
 	private List<Prontuario> prontuarios;
 	
-	@Size(max=30, message="Este campo deve ter no máximo 30 caracteres.")
+	@Size(min=0, max=30, message="Este campo deve ter no máximo 30 caracteres.")
 	@NotNull(message="Este campo não pode ser nulo.")
 	private String endereco;
 	
-	@Size(max=5, message="Este campo deve ter no máximo 5 caracteres.")
+
 	@NotNull(message="Este campo não pode ser nulo.")
 	private int numero;
 	
-	@Size(max=20, message="Este campo deve ter no máximo 20 caracteres.")
+	@Size(min=0, max=20, message="Este campo deve ter no máximo 20 caracteres.")
 	@NotNull(message="Este campo não pode ser nulo.")
 	private String bairro;
 	
-	@Size(max=20, message="Este campo deve ter no máximo 20 caracteres.")
+	@Size(min=0, max=20, message="Este campo deve ter no máximo 20 caracteres.")
 	@NotNull(message="Este campo não pode ser nulo.")
 	private String cidade;
 	
-	@Size(min=8, max=8, message="Este campo deve ter 8 caracteres.")
+
 	@NotNull(message="Este campo não pode ser nulo.")
 	private long cep;
 	
@@ -70,17 +76,16 @@ public class Paciente implements Serializable{
 	@NotNull(message="Este campo não pode ser nulo.")
 	private String estado;
 	
-	@Size(min=11, max=13, message="Este campo deve ter no máximo 13 caracteres.")
+
 	@NotNull(message="Este campo não pode ser nulo.")
 	private long telefone;
 	
-	@Size(max=20, message="Este campo deve ter no máximo 20 caracteres.")
+	@Size(min=0, max=20, message="Este campo deve ter no máximo 20 caracteres.")
 	@NotNull(message="Este campo não pode ser nulo.")
 	private String email;
 	
-	@Size(max=30, message="Este campo deve ter no máximo 30 caracteres.")
+	@Size(min=0, max=30, message="Este campo deve ter no máximo 30 caracteres.")
 	@NotNull(message="Este campo não pode ser nulo.")
-	@Email(message="O email deve ser um endereço válido.")
 	private String observacao;
 	
 	
